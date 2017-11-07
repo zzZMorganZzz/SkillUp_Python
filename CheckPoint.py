@@ -6,15 +6,8 @@
    В случае сбалансированности вывести результат вычисления выражения, иначе указать позицию скобки,
    которая нарушает баланс."""
 
-
-def isBracked(liter):
-    return liter in ['{', '}', '[', ']', '{', '}']
-
-
 _file = open("Task.txt")
-_task = _file.readline().replace(' ', '')
-
-
+task = _file.readline().replace(' ', '')
 
 
 def getReversBracked(bracked):
@@ -32,7 +25,7 @@ def checkBracked(example):
     isResult = True
     openSymbolCollection = []
     closeSymbol = None
-    for item in _task:
+    for item in example:
         if item in ['{', '[', '(']:
             openSymbolCollection.append(item)
             closeSymbol = getReversBracked(item)
@@ -46,7 +39,12 @@ def checkBracked(example):
                 break
     return isResult
 
+print (checkBracked(task))
 
-print (checkBracked(_task))
+task = task.replace('[', '(').replace(']', ')')
+task = task.replace('{', '(').replace('}', ')')
+print (task)
+
+print(eval(task))
 
 _file.close()
