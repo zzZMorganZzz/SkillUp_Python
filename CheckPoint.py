@@ -6,45 +6,59 @@
    В случае сбалансированности вывести результат вычисления выражения, иначе указать позицию скобки,
    которая нарушает баланс."""
 
-_file = open("Task.txt")
-task = _file.readline().replace(' ', '')
 
-
-def getReversBracked(bracked):
-    resultValue = ''
+def get_Revers_Bracked(bracked):
+    return_value = ''
     if bracked == '{':
-        resultValue = '}'
+        return_value = '}'
     if bracked == '[':
-        resultValue = ']'
+        return_value = ']'
     if bracked == '(':
-        resultValue = ')'
-    return resultValue
+        return_value = ')'
+    return return_value
 
 
-def checkBracked(example):
-    isResult = True
-    openSymbolCollection = []
-    closeSymbol = None
+def check_Bracked(example):
+    is_result = True
+    open_symbol_collection = []
+    close_symbol = None
     for item in example:
         if item in ['{', '[', '(']:
-            openSymbolCollection.append(item)
-            closeSymbol = getReversBracked(item)
+            open_symbol_collection.append(item)
+            close_symbol = get_Revers_Bracked(item)
         if item in ['}', ']', ')']:
-            if closeSymbol == item:
-                openSymbolCollection.pop()
-                if len(openSymbolCollection) != 0:
-                    closeSymbol = getReversBracked(openSymbolCollection[len(openSymbolCollection) - 1])
+            if close_symbol == item:
+                open_symbol_collection.pop()
+                close_symbol = None
+                if len(open_symbol_collection) != 0:
+                    close_symbol = get_Revers_Bracked(open_symbol_collection[len(open_symbol_collection) - 1])
             else:
-                isResult = False
+                is_result = False
                 break
-    return isResult
+    if len(open_symbol_collection) != 0:
+        is_result = False
+    return is_result
 
-print (checkBracked(task))
 
-task = task.replace('[', '(').replace(']', ')')
-task = task.replace('{', '(').replace('}', ')')
-print (task)
+pathToFile = input('Specify the path to the file:')
 
-print(eval(task))
-
-_file.close()
+try:
+    file = open(pathToFile, 'r')
+except IOError as Error:
+    print (Error.strerror)
+else:
+    task = file.readline().replace(' ', '')
+    if check_Bracked(task):
+        task = task.replace('[', '(').replace(']', ')')
+        task = task.replace('{', '(').replace('}', ')')
+        try:
+            result = eval(task)
+            print('Task: {0}'.format(task))
+            print('Result: {0}'.format(result))
+        except SyntaxError as Error:
+            print (Error.msg)
+        except NameError as Error:
+            print (Error.message)
+    else:
+        print ('Incorrect brackets')
+    file.close()
