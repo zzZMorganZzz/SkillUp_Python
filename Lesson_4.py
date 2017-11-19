@@ -26,9 +26,7 @@ class Polynomal:
     def __add__(self, other):
         firstRatioList = copy.deepcopy(self.get_ratioList())
         secondRatioList = copy.deepcopy(other.get_ratioList())
-        self.__equalization_Ration_List(firstRatioList, secondRatioList)
-        print self.__ratioList
-        print other.__ratioList
+        self.__equalization_ration_list(firstRatioList, secondRatioList)
         listResult = []
         for i in range(0, len(firstRatioList), 1):
             listResult.append(firstRatioList[i] + secondRatioList[i])
@@ -37,26 +35,59 @@ class Polynomal:
     def __sub__(self, other):
         firstRatioList = copy.deepcopy(self.get_ratioList())
         secondRatioList = copy.deepcopy(other.get_ratioList())
-        self.__equalization_Ration_List(firstRatioList, secondRatioList)
-        print self.__ratioList
-        print other.__ratioList
+        self.__equalization_ration_list(firstRatioList, secondRatioList)
         listResult = []
         for i in range(0, len(firstRatioList), 1):
             listResult.append(firstRatioList[i] - secondRatioList[i])
         return Polynomal(listResult)
 
-
-    def __equalization_Ration_List(self, firstList, secondList):
+    def __equalization_ration_list(self, firstList, secondList):
         isComplite = False
-        while isComplite != True:
+        while not isComplite:
             if len(firstList) != len(secondList):
                 if len(firstList) > len(secondList):
                     secondList.insert(0, 0)
                 else:
                     firstList.insert(0, 0)
-
             else:
                 isComplite = True
 
+    def __mul__(self, other):
+        collectionItems = []
+        firstRatioList = copy.deepcopy(self.get_ratioList())
+        secondRatioList = copy.deepcopy(other.get_ratioList())
+        resultLen = len(firstRatioList) + len(secondRatioList) - 1
+        slip = 0
+        resultList = []
+        for i in range(0, len(firstRatioList), 1):
+            listItem = []
+            self.__correct_slip(listItem, slip)
+            for j in range(0, len(secondRatioList), 1):
+                listItem.append(firstRatioList[i] * secondRatioList[j])
+            slip += 1
+            self.__add_items(listItem, resultLen)
+            collectionItems.append(listItem)
 
-print(Polynomal([5, 2, 3, 4]) - Polynomal([1, 2,-1]))
+        for i in range(0,len(collectionItems[0]),1):
+            item = 0
+            for j in range(0,len(collectionItems),1):
+                item += collectionItems[j][i]
+            resultList.append(item)
+        return Polynomal(resultList)
+
+    def __add_items(self, ListItem, lenList):
+        while len(ListItem)!= lenList:
+            ListItem.append(0)
+
+    def __correct_slip(self,ListItem, slip):
+        for i in range(0,slip,1):
+            ListItem.append(0)
+
+
+first = Polynomal([5, 2, 3, 4])
+second = Polynomal([1, 2, -1])
+print(first)
+print(second)
+print(first * second)
+print(first - second)
+print(first + second)
