@@ -1,0 +1,8 @@
+1.select product.maker,Pc.Model,Pc.speed,Pc.hd from Pc inner join product on product.model = Pc.model
+where price>cast(500 as money)
+
+2.select * from product where type = 'Printer';
+3.select * from Laptop where price > cast(1000 as money);
+4.select * from printer where color = true;
+5.select product.maker,Pc.Model,Pc.speed,Pc.hd from Pc inner join product on product.model = Pc.model
+where price>cast(600 as money) and (Pc.cd = '12x' or Pc.cd = '24x')
